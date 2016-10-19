@@ -175,9 +175,8 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
         } else {
           // set the new tokens from the provider user profile
           if (user.providerData && user.provider === providerUserProfile.provider) {
-            // Update user's provider data access and refresh tokens
-            user.providerData.accessToken = providerUserProfile.providerData.accessToken;
-            user.providerData.refreshToken = providerUserProfile.providerData.refreshToken;
+            // Update user's provider data
+            user.providerData = providerUserProfile.providerData;
             // Then tell mongoose that we've updated the providerData field
             user.markModified('providerData');
              // And save the user
@@ -185,9 +184,8 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
               return done(err, user);
             });
           } else if (user.additionalProvidersData) {
-            // Update user's additional provider data access and refresh tokens
-            user.additionalProvidersData[providerUserProfile.provider].accessToken = providerUserProfile.providerData.accessToken;
-            user.additionalProvidersData[providerUserProfile.provider].refreshToken = providerUserProfile.providerData.refreshToken;
+            // Update user's additional provider data
+            user.additionalProvidersData[providerUserProfile.provider] = providerUserProfile.providerData;
             // Then tell mongoose that we've updated the providerData field
             user.markModified('additionalProvidersData');
             // Then tell mongoose that we've updated the image field
